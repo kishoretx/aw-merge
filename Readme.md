@@ -29,6 +29,7 @@ The application manages the following collections in MongoDB:
 - `id`: String
 - `s3UrlToArchive`: String
 - `parentId`: String
+- `projectId`: String
 - `author`: String
 - `description`: String
 - `createdTime`: DateTime
@@ -36,9 +37,6 @@ The application manages the following collections in MongoDB:
 - `size`: Integer
 - `exist`: Boolean
 - `forcedPush`: Boolean
-- `contentSummary`: ContentSummary
-
-#### CONTENT_SUMMARY
 - `reference`: String
 - `scorecard`: String
 - `tree`: String
@@ -211,3 +209,6 @@ The application manages the following collections in MongoDB:
 
 - **Restart MongoDB:**
   - brew services restart mongodb-community@5.0
+
+- **Access Mongo Express UI:**
+  - http://localhost:8081/

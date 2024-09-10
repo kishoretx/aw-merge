@@ -41,14 +41,22 @@ public class ProjectVersionController {
         projectVersionRepository.deleteById(id);
     }
 
-    @GetMapping("/parentIds/{projectVersionId}")
-    public List<ProjectVersion> findParentIds(@PathVariable String projectVersionId) {
-        return projectVersionRepository.findByParentId(projectVersionId);
-    }
+
 
     @GetMapping("/childProjectIds/{projectVersionId}")
     public List<ProjectVersion> findChildProjectIds(@PathVariable String projectVersionId) {
         List<ProjectVersion> versions = projectVersionRepository.findByParentId(projectVersionId);
         return versions; // Assuming child project IDs are indirectly obtained via versions
+    }
+
+
+    @GetMapping("/parentIds/{projectVersionId}")
+    public Optional<ProjectVersion>findParentIds(@PathVariable String projectVersionId) {
+
+        Optional<ProjectVersion> projectVersion = (projectVersionRepository.findById(projectVersionId));
+        System.out.println("childProjectVersion: " + projectVersion.get().getParentId());
+        String parentId = projectVersion.get().getParentId();
+
+        return projectVersionRepository.findById(parentId);
     }
 }

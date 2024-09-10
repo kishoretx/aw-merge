@@ -1,0 +1,54 @@
+
+
+services:
+  mongodb:
+    image: mongo:5.0.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.runCommand({ping: 1})"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/kishoredb
+      ME_CONFIG_BASICAUTH: 'false'  # Ensure this is quoted if it causes issues
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  springboot-app:
+    image: aw-merge-springboot-img
+    container_name: aw-merge-springboot-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Exposing port 8080 for springboot-app
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/kishoredb
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local

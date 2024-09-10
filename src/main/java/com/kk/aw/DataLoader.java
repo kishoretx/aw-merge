@@ -17,15 +17,15 @@ public class DataLoader {
     public CommandLineRunner loadData(
             ProjectRepository projectRepository,
             ProjectVersionRepository projectVersionRepository,
-            ContentSummaryRepository contentSummaryRepository,
+            //ContentSummaryRepository contentSummaryRepository,
             AssetHashRepository assetHashRepository,
             DatasetRepository datasetRepository) {
         return args -> {
             // Create AssetHash data
-            AssetHash assetHash1 = new AssetHash("asset1", "Tree", "user1", LocalDateTime.now(), "hashCode1", "SHA-256");
-            AssetHash assetHash2 = new AssetHash("asset2", "Scorecard", "user2", LocalDateTime.now(), "hashCode2", "SHA-512");
-            AssetHash assetHash3 = new AssetHash("asset3", "Notebook", "user3", LocalDateTime.now(), "hashCode3", "SHA-256");
-            AssetHash assetHash4 = new AssetHash("asset4", "BinningLibrary", "user4", LocalDateTime.now(), "hashCode4", "SHA-512");
+            AssetHash assetHash1 = new AssetHash("asset1", "Tree", "user1", LocalDateTime.now(), "6GKKJKHNMDTTHKTDZ56", "SHA-256");
+            AssetHash assetHash2 = new AssetHash("asset2", "Scorecard", "user2", LocalDateTime.now(), "8GKKJKHNMDHKUUTDZ90", "SHA-512");
+            AssetHash assetHash3 = new AssetHash("asset3", "Notebook", "user3", LocalDateTime.now(), "0GKKJKKKHNMDHKTDZ27", "SHA-256");
+            AssetHash assetHash4 = new AssetHash("asset4", "BinningLibrary", "user4", LocalDateTime.now(), "9GKKJKHNMDHKTDHHZ99", "SHA-512");
 
 
             assetHashRepository.saveAll(Arrays.asList(assetHash1, assetHash2, assetHash3, assetHash4));
@@ -42,8 +42,8 @@ public class DataLoader {
             assetHashMap.put("asset2", assetHash2);
             assetHashMap.put("asset3", assetHash3);
             assetHashMap.put("asset4", assetHash4);
-            ContentSummary contentSummary = new ContentSummary(12, 5, 3, 7, 4, 9,  Arrays.asList(dataset1, dataset2, dataset3), Arrays.asList("tag1", "tag2"), assetHashMap);
-            contentSummaryRepository.save(contentSummary);
+            //ContentSummary contentSummary = new ContentSummary(12, 5, 3, 7, 4, 9,  Arrays.asList(dataset1, dataset2, dataset3), Arrays.asList("tag1", "tag2"), assetHashMap);
+            //contentSummaryRepository.save(contentSummary);
 
             // Create Projects and Versions
             List<Project> projects = new ArrayList<>();
@@ -72,6 +72,7 @@ public class DataLoader {
                 for (int j = 1; j <= numVersions; j++) {
                     ProjectVersion projectVersion = new ProjectVersion(
                             "version" + (i * 10 + j),
+                            "project" + i, //@KK
                             "s3://bucket/archive" + (i * 10 + j),
                             null, // parentId will be set later
                             "author" + i,
@@ -81,7 +82,8 @@ public class DataLoader {
                             100 + j * 10, // Size increment based on version
                             true,
                             false,
-                            contentSummary
+                            //contentSummary
+                            12, 5, 3, 7, 4, 9,  Arrays.asList(dataset1, dataset2, dataset3), Arrays.asList("tag1", "tag2"), assetHashMap
                     );
 
                     projectVersions.add(projectVersion);
